@@ -1,0 +1,13 @@
+.heading{
+    text-align: center;
+}
+.subheader{
+    text-align: center;
+}
+.btn{
+    width: 5%;
+}
+.form-control{
+    margin-left: auto;
+    margin-right: auto;
+}
