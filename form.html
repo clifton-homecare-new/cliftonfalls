@@ -33,29 +33,50 @@
       </nav>
       
     
-      <div class="container bg-light rounded-5 p-4">
-        <div class="row justify-content-center mb-3">
-          <h1 class="heading text-center">Clifton Healthcare Process</h1>
-        </div>
-
-        <div class="row justify-content-center">
-          <div class="col-md-5 mb-3">
-            <input type="text" id="EmployeeName" class="form-control" placeholder="Name">
+      <form id="assessmentForm">
+        <div class="container bg-light rounded-5 p-4">
+          <div class="row justify-content-center mb-3">
+            <h1 class="heading text-center">Clifton Healthcare Process</h1>
           </div>
-          <div class="col-md-5 mb-3">
-            <input type="text" id="currentDate" class="form-control" readonly>
-          </div>
-        </div>
-
-        <p>1.	 Has the service user fallen a height greater than 4 steps?
-          If no, continue with secondary survey.  If yes proceed with caution.  
-          If service user has fallen a height greater than 4 steps, landed on a hard surface or is complaining of pain call 111 for advice.
-          Caution, an elderly,frail person falling to the floor may easily result in significant injury.</p>
       
-        <div class="d-flex justify-content-center mt-3">
-          <button id="submitForm" class="btn btn-success d-flex justify-content-center">Submit</button>
+          <div class="row justify-content-center">
+            <div class="col-md-5 mb-3">
+              <label for="EmployeeName" class="form-label">Name</label>
+              <input type="text" id="EmployeeName" class="form-control" placeholder="Enter name" required>
+            </div>
+            <div class="col-md-5 mb-3">
+              <label for="currentDate" class="form-label">Date</label>
+              <input type="text" id="currentDate" class="form-control" readonly>
+            </div>
+          </div>
+      
+          <p>
+            <strong>1.</strong> Has the service user fallen a height greater than 4 steps?  
+            If no, continue with secondary survey. If yes, proceed with caution.  
+            If the service user has fallen a height greater than 4 steps, landed on a hard surface, or is complaining of pain, call 111 for advice.  
+            <em>Caution:</em> An elderly or frail person falling to the floor may easily result in significant injury.
+          </p>
+
+          <div class="row mb-3">
+            <div class="col-md-3">
+              <button type="button" class="btn btn-outline-success w-100" id="btnYes">Yes</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-outline-danger w-100" id="btnNo">No</button>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <input type="text" id="fallNotes" class="form-control" placeholder="Add notes (optional)">
+            </div>
+          </div>
+          <input type="hidden" id="fallAnswer" name="fallAnswer">
+          
+      
+          <div class="d-flex justify-content-center mt-3">
+            <button type="submit" id="submitForm" class="btn btn-success d-flex justify-content-center">Submit</button>
+          </div>
         </div>
-      </div>
+      </form>
+      
     
     <script type="module" src="js/form.js"></script>
 </body>
