@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         HospitalTransportNotes: document.getElementById("HospitalTransportNotes").value,
         LeavingHouseNotes: document.getElementById("LeavingHouseNotes").value,
         SecureNotes: document.getElementById("SecureNotes").value,
+        Score: document.getElementById("Score").value,
 
         timestamp: new Date()
       };
