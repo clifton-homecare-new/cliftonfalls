@@ -1,31 +1,53 @@
-import bcrypt from 'bcryptjs';
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+// Firebase CDN Imports (as ES module)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-const db = getFirestore(app);
-
-const storePassword = async (password) => {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Store the hashed password in Firestore
-    await setDoc(doc(db, "passwords", "user_password"), { password: hashedPassword });
+// Your Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyDAGJMe_T-PwrP4pCAmlFtQflpBARYMP4s",
+  authDomain: "cliftonhomecare-98f75.firebaseapp.com",
+  projectId: "cliftonhomecare-98f75",
+  storageBucket: "cliftonhomecare-98f75.firebasestorage.app",
+  messagingSenderId: "938713106409",
+  appId: "1:938713106409:web:e47cbc56fbf3e9cda2ed78",
+  measurementId: "G-WZS9CJ6LBQ"
 };
 
-const verifyPassword = async (inputPassword) => {
-  const docRef = doc(db, "passwords", "user_password");
-  const docSnap = await getDoc(docRef);
+// Init Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-  if (docSnap.exists()) {
-      const hashedPassword = docSnap.data().password;
+// Wait for page to load
+document.addEventListener("DOMContentLoaded", () => {
+  const submitBtn = document.getElementById("submit");
 
-      const isMatch = await bcrypt.compare(inputPassword, hashedPassword);
-      if (isMatch) {
-          console.log("Password is correct!");
-      } else {
-          console.log("Invalid password.");
-      }
-  } else {
-      console.log("No password found.");
+  if (!submitBtn) {
+    console.error("Submit button not found");
+    return;
   }
-};
 
+  submitBtn.addEventListener("click", () => {
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const errorDiv = document.getElementById("error-message");
+
+    if (!emailInput || !passwordInput) {
+      console.error("Email or password field is missing in the HTML");
+      return;
+    }
+
+    const email = emailInput.value;
+    const password = passwordInput.value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Success – redirect
+        window.location.href = "/form.html";
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
+        errorDiv.style.display = "block";
+        errorDiv.textContent = "Incorrect email or password.";
+      });
+  });
+});

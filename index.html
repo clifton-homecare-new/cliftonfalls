@@ -42,11 +42,15 @@
                     <div class="card-body p-4">
                         <h3 class="text-center">Login</h3>
                             <div class="mb-3 text-center">
+                                <input type="email" class="form-control rounded-5 mx-auto" id="email" name="email" placeholder="Email" required style="width: 80%;">
+                            </div>
+                            <div class="mb-3 text-center">
                                 <input type="password" class="form-control rounded-5 mx-auto" id="password" name="password" placeholder="Password" required style="width: 80%;">
                             </div>
+                          
                             <div id="error-message" class="text-danger mb-3" style="display: none; text-align: center;">Incorrect Password.</div>
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-success rounded-5" id="submit" style="width: 50%; margin: 0 auto;">Login</button>
+                                <button type="button" class="btn btn-success rounded-5" id="submit" style="width: 50%; margin: 0 auto;">Login</button>
                             </div>
                     </div>
                 </div>
@@ -54,6 +58,7 @@
         </div>
     </div>
 
+    <script type="module" src="js/login.js"></script>
 </body>
 
 </html>
