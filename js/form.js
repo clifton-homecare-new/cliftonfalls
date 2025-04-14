@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Firebase config and init
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDAGJMe_T-PwrP4pCAmlFtQflpBARYMP4s",
   authDomain: "cliftonhomecare-98f75.firebaseapp.com",
@@ -17,52 +17,98 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// DOM ready
+// DOM Ready
 document.addEventListener("DOMContentLoaded", () => {
   const dateInput = document.getElementById("currentDate");
   const today = new Date().toISOString().split("T")[0];
   dateInput.value = today;
 
   const form = document.getElementById("assessmentForm");
-  const yesBtn = document.getElementById("btnYes");
-  const noBtn = document.getElementById("btnNo");
+
+  const btnYes = document.getElementById("btnYes");
+  const btnNo = document.getElementById("btnNo");
   const fallAnswerInput = document.getElementById("fallAnswer");
 
-  // Yes/No button logic
-  yesBtn.addEventListener("click", () => {
+  const btnYes1 = document.getElementById("btnYes1");
+  const btnNo1 = document.getElementById("btnNo1");
+  const ConsciousAnswerInput = document.getElementById("ConsciousAnswer");
+
+  const btnYes2 = document.getElementById("btnYes2");
+  const btnNo2 = document.getElementById("btnNo2");
+  const VisionAnswerInput = document.getElementById("VisionAnswer");
+
+  // Fall Question Logic
+  btnYes.addEventListener("click", () => {
     fallAnswerInput.value = "Yes";
-    yesBtn.classList.add("active", "btn-success");
-    yesBtn.classList.remove("btn-outline-success");
-    noBtn.classList.remove("active", "btn-danger");
-    noBtn.classList.add("btn-outline-danger");
+    btnYes.classList.add("active", "btn-success");
+    btnYes.classList.remove("btn-outline-success");
+    btnNo.classList.remove("active", "btn-danger");
+    btnNo.classList.add("btn-outline-danger");
   });
 
-  noBtn.addEventListener("click", () => {
+  btnNo.addEventListener("click", () => {
     fallAnswerInput.value = "No";
-    noBtn.classList.add("active", "btn-danger");
-    noBtn.classList.remove("btn-outline-danger");
-    yesBtn.classList.remove("active", "btn-success");
-    yesBtn.classList.add("btn-outline-success");
+    btnNo.classList.add("active", "btn-danger");
+    btnNo.classList.remove("btn-outline-danger");
+    btnYes.classList.remove("active", "btn-success");
+    btnYes.classList.add("btn-outline-success");
   });
 
-  // Check if user is logged in
+  // Consciousness Question Logic
+  btnYes1.addEventListener("click", () => {
+    ConsciousAnswerInput.value = "Yes";
+    btnYes1.classList.add("active", "btn-success");
+    btnYes1.classList.remove("btn-outline-success");
+    btnNo1.classList.remove("active", "btn-danger");
+    btnNo1.classList.add("btn-outline-danger");
+  });
+
+  btnNo1.addEventListener("click", () => {
+    ConsciousAnswerInput.value = "No";
+    btnNo1.classList.add("active", "btn-danger");
+    btnNo1.classList.remove("btn-outline-danger");
+    btnYes1.classList.remove("active", "btn-success");
+    btnYes1.classList.add("btn-outline-success");
+  });
+
+  btnYes2.addEventListener("click", () => {
+    VisionAnswerInput.value = "Yes";
+    btnYes2.classList.add("active", "btn-success");
+    btnYes2.classList.remove("btn-outline-success");
+    btnNo2.classList.remove("active", "btn-danger");
+    btnNo2.classList.add("btn-outline-danger");
+  });
+
+  btnNo2.addEventListener("click", () => {
+    VisionAnswerInput.value = "No";
+    btnNo2.classList.add("active", "btn-danger");
+    btnNo2.classList.remove("btn-outline-danger");
+    btnYes2.classList.remove("active", "btn-success");
+    btnYes2.classList.add("btn-outline-success");
+  });
+
+
+  // Auth + Submit
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       alert("You must be logged in to submit the form.");
       return;
     }
 
-    // Submit handler
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const name = document.getElementById("EmployeeName").value;
       const date = document.getElementById("currentDate").value;
-      const fallAnswer = document.getElementById("fallAnswer").value;
+      const fallAnswer = fallAnswerInput.value;
       const fallNotes = document.getElementById("fallNotes").value;
+      const ConsciousAnswer = ConsciousAnswerInput.value;
+      const ConsciousNotes = document.getElementById("ConsciousNotes").value;
+      const VisionAnswer = VisionAnswerInput.value;
+      const VisionNotes = document.getElementById("VisionNotes").value;
 
-      if (!fallAnswer) {
-        alert("Please select Yes or No for the fall question.");
+      if (!fallAnswer || !ConsciousAnswer) {
+        alert("Please answer all questions.");
         return;
       }
 
@@ -73,17 +119,24 @@ document.addEventListener("DOMContentLoaded", () => {
           date,
           fallAnswer,
           fallNotes,
+          ConsciousAnswer,
+          ConsciousNotes,
+          VisionAnswer,
+          VisionNotes,
           timestamp: new Date()
         });
 
         alert("Form submitted successfully!");
         form.reset();
-        dateInput.value = today; // reset date again after reset
-        fallAnswerInput.value = ""; // clear hidden input
-        yesBtn.classList.remove("active", "btn-success");
-        yesBtn.classList.add("btn-outline-success");
-        noBtn.classList.remove("active", "btn-danger");
-        noBtn.classList.add("btn-outline-danger");
+        dateInput.value = today;
+        fallAnswerInput.value = "";
+        ConsciousAnswerInput.value = "";
+
+        // Reset buttons UI
+        [btnYes, btnNo, btnYes1, btnNo1, btnYes2, btnNo2].forEach((btn) => {
+          btn.classList.remove("active", "btn-success", "btn-danger");
+          btn.classList.add(btn.id.includes("Yes") ? "btn-outline-success" : "btn-outline-danger");
+        });
 
       } catch (error) {
         console.error("Error saving form:", error);
@@ -92,3 +145,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+

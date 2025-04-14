@@ -69,8 +69,48 @@
             </div>
           </div>
           <input type="hidden" id="fallAnswer" name="fallAnswer">
+
+          <p>
+            <strong>2.</strong> Has service user lost consciousness – if no continue with secondary survey.  
+            If yes ring North West Ambulance Service 
+          </p>
           
-      
+          <div class="row mb-3">
+            <div class="col-md-3">
+              <button type="button" class="btn btn-outline-success w-100" id="btnYes1">Yes</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-outline-danger w-100" id="btnNo1">No</button>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <input type="text" id="ConsciousNotes" class="form-control" placeholder="Add notes (optional)">
+            </div>
+          </div>
+          <input type="hidden" id="ConsciousAnswer" name="ConsciousAnswer">
+
+          <p>
+            <strong>3. </strong> Ask the service user to lie still.
+          </p>
+
+          <p>
+            <strong>4. </strong>Check the service user’s head for any obvious head injury.  
+            Ask if they have a headache, blurred vision, feel nauseous, have vomited, feel tired/sleepy.  
+            If yes to any of these symptoms ring 111 for advice.
+          </p>
+
+          <div class="row mb-3">
+            <div class="col-md-3">
+              <button type="button" class="btn btn-outline-success w-100" id="btnYes2">Yes</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-outline-danger w-100" id="btnNo2">No</button>
+            </div>
+            <div class="col-md-6 mt-2 mt-md-0">
+              <input type="text" id="VisionNotes" class="form-control" placeholder="Add notes (optional)">
+            </div>
+          </div>
+          <input type="hidden" id="VisionAnswer" name="VisionAnswer">
+
           <div class="d-flex justify-content-center mt-3">
             <button type="submit" id="submitForm" class="btn btn-success d-flex justify-content-center">Submit</button>
           </div>
