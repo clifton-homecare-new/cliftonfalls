@@ -1,3 +1,4 @@
+// Firebase imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -13,11 +14,12 @@ const firebaseConfig = {
   measurementId: "G-WZS9CJ6LBQ"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// DOM Ready
+// On DOM Ready
 document.addEventListener("DOMContentLoaded", () => {
   const dateInput = document.getElementById("currentDate");
   const today = new Date().toISOString().split("T")[0];
@@ -25,70 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("assessmentForm");
 
-  const btnYes = document.getElementById("btnYes");
-  const btnNo = document.getElementById("btnNo");
-  const fallAnswerInput = document.getElementById("fallAnswer");
-
-  const btnYes1 = document.getElementById("btnYes1");
-  const btnNo1 = document.getElementById("btnNo1");
-  const ConsciousAnswerInput = document.getElementById("ConsciousAnswer");
-
-  const btnYes2 = document.getElementById("btnYes2");
-  const btnNo2 = document.getElementById("btnNo2");
-  const VisionAnswerInput = document.getElementById("VisionAnswer");
-
-  // Fall Question Logic
-  btnYes.addEventListener("click", () => {
-    fallAnswerInput.value = "Yes";
-    btnYes.classList.add("active", "btn-success");
-    btnYes.classList.remove("btn-outline-success");
-    btnNo.classList.remove("active", "btn-danger");
-    btnNo.classList.add("btn-outline-danger");
-  });
-
-  btnNo.addEventListener("click", () => {
-    fallAnswerInput.value = "No";
-    btnNo.classList.add("active", "btn-danger");
-    btnNo.classList.remove("btn-outline-danger");
-    btnYes.classList.remove("active", "btn-success");
-    btnYes.classList.add("btn-outline-success");
-  });
-
-  // Consciousness Question Logic
-  btnYes1.addEventListener("click", () => {
-    ConsciousAnswerInput.value = "Yes";
-    btnYes1.classList.add("active", "btn-success");
-    btnYes1.classList.remove("btn-outline-success");
-    btnNo1.classList.remove("active", "btn-danger");
-    btnNo1.classList.add("btn-outline-danger");
-  });
-
-  btnNo1.addEventListener("click", () => {
-    ConsciousAnswerInput.value = "No";
-    btnNo1.classList.add("active", "btn-danger");
-    btnNo1.classList.remove("btn-outline-danger");
-    btnYes1.classList.remove("active", "btn-success");
-    btnYes1.classList.add("btn-outline-success");
-  });
-
-  btnYes2.addEventListener("click", () => {
-    VisionAnswerInput.value = "Yes";
-    btnYes2.classList.add("active", "btn-success");
-    btnYes2.classList.remove("btn-outline-success");
-    btnNo2.classList.remove("active", "btn-danger");
-    btnNo2.classList.add("btn-outline-danger");
-  });
-
-  btnNo2.addEventListener("click", () => {
-    VisionAnswerInput.value = "No";
-    btnNo2.classList.add("active", "btn-danger");
-    btnNo2.classList.remove("btn-outline-danger");
-    btnYes2.classList.remove("active", "btn-success");
-    btnYes2.classList.add("btn-outline-success");
-  });
-
-
-  // Auth + Submit
+  // Firebase Auth - Check User
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       alert("You must be logged in to submit the form.");
@@ -98,51 +37,45 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const name = document.getElementById("EmployeeName").value;
-      const date = document.getElementById("currentDate").value;
-      const fallAnswer = fallAnswerInput.value;
-      const fallNotes = document.getElementById("fallNotes").value;
-      const ConsciousAnswer = ConsciousAnswerInput.value;
-      const ConsciousNotes = document.getElementById("ConsciousNotes").value;
-      const VisionAnswer = VisionAnswerInput.value;
-      const VisionNotes = document.getElementById("VisionNotes").value;
+      // Collect form data
+      const formData = {
+        uid: user.uid,
+        name: document.getElementById("EmployeeName").value,
+        date: document.getElementById("currentDate").value,
 
-      if (!fallAnswer || !ConsciousAnswer) {
-        alert("Please answer all questions.");
-        return;
-      }
+        fallNotes: document.getElementById("fallNotes").value,
+        ConsciousNotes: document.getElementById("ConsciousNotes").value,
+        LieStillNotes: document.getElementById("LieStillNotes").value,
+        VisionNotes: document.getElementById("VisionNotes").value,
+        BackNotes: document.getElementById("BackNotes").value,
+        CollarBoneNotes: document.getElementById("CollarBoneNotes").value,
+        ArmNotes: document.getElementById("ArmNotes").value,
+        ChestNotes: document.getElementById("ChestNotes").value,
+        HipNotes: document.getElementById("HipNotes").value,
+        LegNotes: document.getElementById("LegNotes").value,
+        SpineNotes: document.getElementById("SpineNotes").value,
+        HardFloorNotes: document.getElementById("HardFloorNotes").value,
+        SitUpNotes: document.getElementById("SitUpNotes").value,
+        SelfHelpNotes: document.getElementById("SelfHelpNotes").value,
+        LeftAtHomeNotes: document.getElementById("LeftAtHomeNotes").value,
+        HospitalTransportNotes: document.getElementById("HospitalTransportNotes").value,
+        LeavingHouseNotes: document.getElementById("LeavingHouseNotes").value,
+        SecureNotes: document.getElementById("SecureNotes").value,
 
+        timestamp: new Date()
+      };
+
+      // Submit to Firestore
       try {
-        await addDoc(collection(db, "assessments"), {
-          uid: user.uid,
-          name,
-          date,
-          fallAnswer,
-          fallNotes,
-          ConsciousAnswer,
-          ConsciousNotes,
-          VisionAnswer,
-          VisionNotes,
-          timestamp: new Date()
-        });
+        await addDoc(collection(db, "assessments"), formData);
 
         alert("Form submitted successfully!");
         form.reset();
         dateInput.value = today;
-        fallAnswerInput.value = "";
-        ConsciousAnswerInput.value = "";
-
-        // Reset buttons UI
-        [btnYes, btnNo, btnYes1, btnNo1, btnYes2, btnNo2].forEach((btn) => {
-          btn.classList.remove("active", "btn-success", "btn-danger");
-          btn.classList.add(btn.id.includes("Yes") ? "btn-outline-success" : "btn-outline-danger");
-        });
-
       } catch (error) {
-        console.error("Error saving form:", error);
-        alert("Failed to submit form.");
+        console.error("Error submitting form:", error);
+        alert("Failed to submit the form.");
       }
     });
   });
 });
-
