@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Success – redirect
-        window.location.href = "/form.html";
+        window.location.href = "form.html";
       })
       .catch((error) => {
         console.error("Login failed:", error);
