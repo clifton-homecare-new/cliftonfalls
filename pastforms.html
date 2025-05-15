@@ -78,6 +78,9 @@
                 <div>
                     <h5>Patient Name</h5>
                 </div>
+                <div class="text-light">
+                    <h5>Patient Name</h5>
+                </div>
             </div>
 
             <div id="formList">
@@ -86,16 +89,17 @@
         </div>
     </div>
 
-    <!-- Modal for form details -->
-    <div id="formDetailsContainer">
-        <div class="container">
-            <div class="modal-content">
+    <div id="formDetailsContainer" class="modal-overlay d-none">
+        <div class="modal-box">
+            <div class="modal-content p-4 bg-white rounded shadow" style="max-height: 90vh; overflow-y: auto;">
                 <h4>Form Details</h4>
-                <div id="formDetails"></div>
+                <div id="formDetails" class="mb-3"></div>
                 <button id="closeModalButton" class="btn btn-danger">Close</button>
             </div>
         </div>
     </div>
+    
+
 
     <script type="module" src="js/pastforms.js"></script>
 </body>

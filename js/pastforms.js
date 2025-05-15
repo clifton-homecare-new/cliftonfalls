@@ -83,43 +83,57 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Show form details
-    const showFormDetails = async (formId) => {
-        try {
-            const docRef = doc(db, "assessments", formId);
-            const docSnap = await getDoc(docRef);
+const showFormDetails = async (formId) => {
+    try {
+        const docRef = doc(db, "assessments", formId);
+        const docSnap = await getDoc(docRef);
 
-            if (!docSnap.exists()) {
-                alert("Form not found.");
-                return;
-            }
-
-            const data = docSnap.data();
-            formDetailsContainer.innerHTML = `
-                <div class="modal-content p-4 bg-light rounded">
-                    <h4>Form Details</h4>
-                    <p><strong>Name:</strong> ${data.name}</p>
-                    <p><strong>Date:</strong> ${data.date}</p>
-                    <p><strong>Patient:</strong> ${data.PatientName}</p>
-                    <p><strong>Fall Notes:</strong> ${data.fallNotes}</p>
-                    <p><strong>Conscious Notes:</strong> ${data.ConsciousNotes}</p>
-                    <p><strong>Vision Notes:</strong> ${data.VisionNotes}</p>
-                    <p><strong>Back Notes:</strong> ${data.BackNotes}</p>
-                    <p><strong>Collar Bone Notes:</strong> ${data.CollarBoneNotes}</p>
-                    <p><strong>Score:</strong> ${data.Score}</p>
-                    <button id="closeModalButton" class="btn btn-danger mt-3">Close</button>
-                </div>
-            `;
-            formDetailsContainer.style.display = "block";
-
-            document.getElementById("closeModalButton").addEventListener("click", () => {
-                formDetailsContainer.style.display = "none";
-            });
-
-        } catch (error) {
-            console.error("Failed to load form:", error);
+        if (!docSnap.exists()) {
+            alert("Form not found.");
+            return;
         }
-    };
+
+        const data = docSnap.data();
+
+        // Only update the inner details, not the whole container
+        document.getElementById("formDetails").innerHTML = `
+            <p><strong>Name:</strong> ${data.name}</p>
+            <p><strong>Date:</strong> ${data.date}</p>
+            <p><strong>Patient:</strong> ${data.PatientName}</p>
+            <p><strong>Q1:</strong> ${data.fallNotes}</p>
+            <p><strong>Q2:</strong> ${data.ConsciousNotes}</p>
+            <p><strong>Q3:</strong> ${data.LieStillNotes}</p>
+            <p><strong>Q4:</strong> ${data.VisionNotes}</p>
+            <p><strong>Q5:</strong> ${data.BackNotes}</p>
+            <p><strong>Q6:</strong> ${data.CollarBoneNotes}</p>
+            <p><strong>Q7:</strong> ${data.ArmNotes}</p>
+            <p><strong>Q8:</strong> ${data.ChestNotes}</p>
+            <p><strong>Q9:</strong> ${data.HipNotes}</p>
+            <p><strong>Q10:</strong> ${data.LegNotes}</p>
+            <p><strong>Q11:</strong> ${data.SpineNotes}</p>
+            <p><strong>Q12:</strong> ${data.HardFloorNotes}</p>
+            <p><strong>Q13:</strong> ${data.SitUpNotes}</p>
+            <p><strong>Q14:</strong> ${data.SelfHelpNotes}</p>
+            <p><strong>Q15:</strong> ${data.LeftAtHomeNotes}</p>
+            <p><strong>Q16:</strong> ${data.HospitalTransportNotes}</p>
+            <p><strong>Q17:</strong> ${data.LeavingHouseNotes}</p>
+            <p><strong>Q18:</strong> ${data.SecureNotes}
+            <p><strong>Score:</strong> ${data.Score}</p>
+        `;
+
+        // Show modal
+        document.getElementById("formDetailsContainer").classList.remove("d-none");
+
+    } catch (error) {
+        console.error("Failed to load form:", error);
+    }
+};
+
+// Close modal event (should be outside showFormDetails)
+closeModalButton.addEventListener("click", () => {
+    document.getElementById("formDetailsContainer").classList.add("d-none");
+});
+
 
     // Event listeners for filters
     const bindFilters = (user) => {
