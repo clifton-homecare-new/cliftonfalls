@@ -1,10 +1,8 @@
-// Firebase imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDAGJMe_T-PwrP4pCAmlFtQflpBARYMP4s",
   authDomain: "cliftonhomecare-98f75.firebaseapp.com",
@@ -15,19 +13,15 @@ const firebaseConfig = {
   measurementId: "G-WZS9CJ6LBQ"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// DOM Ready
 document.addEventListener("DOMContentLoaded", () => {
-  const dateInput = document.getElementById("currentDate");
+  const dateInput = document.getElementById("dateFilter");
   const today = new Date().toISOString().split("T")[0];
-  if (dateInput) {
-    dateInput.value = today;
-  }
+  if (dateInput) dateInput.value = today;
 
   const form = document.getElementById("assessmentForm");
   if (!form) {
@@ -35,27 +29,39 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Wait for user to be authenticated
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       alert("You must be logged in to submit the form.");
-      window.location.href = "index.html"; // Redirect to login
+      window.location.href = "index.html";
       return;
     }
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // Get file from input
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
       const fileInput = document.getElementById("fileUpload");
+      const file = fileInput?.files?.[0];
       let uploadedFilePath = "";
 
       try {
-        const file = fileInput.files[0];
         if (file) {
+          if (file.size > 10 * 1024 * 1024) {
+            alert("File too large (max 10MB)");
+            return;
+          }
+          if (!file.type.startsWith("image/")) {
+            alert("Only image files are allowed.");
+            return;
+          }
+
           const fileRef = ref(storage, `uploads/${user.uid}/${file.name}`);
           await uploadBytes(fileRef, file);
-          uploadedFilePath = fileRef.fullPath;
+          uploadedFilePath = await getDownloadURL(fileRef);
           console.log("File uploaded:", uploadedFilePath);
         }
       } catch (uploadError) {
@@ -64,11 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Prepare form data
       const formData = {
         uid: user.uid,
         name: document.getElementById("EmployeeName").value,
-        date: document.getElementById("currentDate").value,
+        date: dateInput.value,
         PatientName: document.getElementById("PatientName").value,
 
         fallNotes: document.getElementById("fallNotes").value,
@@ -89,16 +94,20 @@ document.addEventListener("DOMContentLoaded", () => {
         HospitalTransportNotes: document.getElementById("HospitalTransportNotes").value,
         LeavingHouseNotes: document.getElementById("LeavingHouseNotes").value,
         SecureNotes: document.getElementById("SecureNotes").value,
+
         Score: document.getElementById("Score").value,
         filePath: uploadedFilePath,
         timestamp: new Date()
       };
 
-      // Upload form data to Firestore
+      if (!formData.name || !formData.PatientName || !formData.date) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
       try {
         await addDoc(collection(db, "assessments"), formData);
         alert("Form submitted successfully!");
-
         form.reset();
         dateInput.value = today;
       } catch (error) {
