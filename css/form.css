@@ -11,3 +11,153 @@
     margin-left: auto;
     margin-right: auto;
 }
+.image-container {
+      position: relative;
+      display: inline-block;
+    }
+    .overlay-text1 {
+      position: absolute;
+      top: 20%;
+      left: 80%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text2 {
+      position: absolute;
+      top: 30%;
+      left: 80%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text3 {
+      position: absolute;
+      top: 40%;
+      left: 80%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text4 {
+      position: absolute;
+      top: 50%;
+      left: 80%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text5 {
+      position: absolute;
+      top: 60%;
+      left: 80%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text6 {
+      position: absolute;
+      top: 70%;
+      left: 80%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text7 {
+      position: absolute;
+      top: 80%;
+      left: 80%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text8 {
+      position: absolute;
+      top: 90%;
+      left: 80%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+
+
+    .overlay-text11 {
+      position: absolute;
+      top: 20%;
+      left: 89%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text12 {
+      position: absolute;
+      top: 30%;
+      left: 89%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text13 {
+      position: absolute;
+      top: 40%;
+      left: 89%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text14 {
+      position: absolute;
+      top: 50%;
+      left: 89%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text15 {
+      position: absolute;
+      top: 60%;
+      left: 89%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text16 {
+      position: absolute;
+      top: 70%;
+      left: 89%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text17 {
+      position: absolute;
+      top: 80%;
+      left: 89%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
+    .overlay-text18 {
+      position: absolute;
+      top: 90%;
+      left: 89%;
+      background-color: white;
+      border-radius: 5px;
+      text-align: center;
+      width: 9%;
+    }
